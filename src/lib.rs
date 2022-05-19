@@ -1,6 +1,6 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::LookupMap;
-use near_sdk::{env, near_bindgen, AccountId};
+use near_sdk::{env, near_bindgen, AccountId, serde::{Serialize}};
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -9,7 +9,8 @@ pub struct StatusMessage {
 }
 
 /// A simple message with a title
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct Message {
     /// Title that describes the message
     title: String,
@@ -34,12 +35,7 @@ impl StatusMessage {
     }
 
     /// Get the status message for a given account id
-    pub fn get_status_message(&self, account_id: AccountId) -> Option<String> {
-        match self.records.get(&account_id) {
-            Some(Message { body, title }) => {
-                Some(format!("{{\"title\": \"{title}\", \"message\": \"{body}\"}}"))
-            }
-            None => None,
-        }
+    pub fn get_status_message(&self, account_id: AccountId) -> Option<Message> {
+        self.records.get(&account_id)
     }
 }
