@@ -72,9 +72,8 @@ rustup target add wasm32-unknown-unknown
 
 ## Using this contract
 
-### Web app
 
-Deploy the smart contract to a specific account created with the NEAR Wallet. Then interact with the smart contract using near-api-js on the frontend.
+Deploy the smart contract to a specific account created with the NEAR Wallet. Then interact with the smart contract using https://raen.dev.
 
 If you do not have a NEAR account, please create one with [NEAR Wallet](https://wallet.testnet.near.org).
 
@@ -90,13 +89,6 @@ Deploy the contract to your NEAR account:
 near deploy --wasmFile res/status_message.wasm --accountId YOUR_ACCOUNT_NAME
 ```
 
-Build the frontend:
-
-```bash
-npm start
-```
-
-If all is successful the app should be live at `localhost:1234`!
 
 ### Quickest deploy
 Build and deploy this smart contract to an development account. This development account will be created automatically and is not intended to be permanent. Please see the "Standard deploy" section for creating a more personalized account to deploy to.
@@ -187,8 +179,3 @@ Make sure the original status remains:
 near view YOUR_ACCOUNT_NAME get_status '{"account_id": "YOUR_ACCOUNT_NAME"}'
 ```
 
-## Testing
-To test run:
-```bash
-cargo test --package status-message -- --nocapture
-```
