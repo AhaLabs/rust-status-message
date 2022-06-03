@@ -89,13 +89,6 @@ Deploy the contract to your NEAR account:
 near deploy --wasmFile res/status_message.wasm --accountId YOUR_ACCOUNT_NAME
 ```
 
-Build the frontend:
-
-```bash
-npm start
-```
-
-If all is successful the app should be live at `localhost:1234`!
 
 ### Quickest deploy
 Build and deploy this smart contract to an development account. This development account will be created automatically and is not intended to be permanent. Please see the "Standard deploy" section for creating a more personalized account to deploy to.
