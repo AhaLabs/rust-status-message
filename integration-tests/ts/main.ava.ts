@@ -14,25 +14,24 @@ test.beforeEach(async (t) => {
   const root = worker.rootAccount;
   const contract = await root.createAndDeploy(
     root.getSubAccount("rust-counter").accountId,
-    "./res/status_message.wasm",
+    "./target/res/simple.wasm",
     { initialBalance: NEAR.parse("30 N").toJSON() }
   );
 
+  let subAccount = async (name: string) => root.createSubAccount(name, {
+    initialBalance: NEAR.parse("30 N").toJSON(),
+  });
+
   // some test accounts
-  const alice = await root.createSubAccount("alice", {
-    initialBalance: NEAR.parse("30 N").toJSON(),
-  });
-  const bob = await root.createSubAccount("bob", {
-    initialBalance: NEAR.parse("30 N").toJSON(),
-  });
-  const charlie = await root.createSubAccount("charlie", {
-    initialBalance: NEAR.parse("30 N").toJSON(),
-  });
+  const alice = await subAccount("alice");
+  const bob = await subAccount("bob");
+  const charlie = await subAccount("charlie");
 
   // Save state for test runs, it is unique for each test
   t.context.worker = worker;
   t.context.accounts = { root, contract, alice, bob, charlie };
 });
+
 
 test.afterEach(async (t) => {
   // Stop Sandbox server
@@ -42,15 +41,15 @@ test.afterEach(async (t) => {
 });
 
 test("set get message", async (t) => {
-  const { root, contract, alice, bob, charlie } = t.context.accounts;
+  const { contract, alice } = t.context.accounts;
   await alice.call(contract, "set_status", { message: "hello" });
   const aliceStatus = await contract.view("get_status", { account_id: alice });
   t.is(aliceStatus, "hello");
 });
 
 test("get nonexistent message", async (t) => {
-  const { root, contract, alice, bob, charlie } = t.context.accounts;
-  const message: null = await contract.view("get_status", {
+  const { root, contract } = t.context.accounts;
+  const message: string | null = await contract.view("get_status", {
     account_id: root,
   });
   t.is(message, null);

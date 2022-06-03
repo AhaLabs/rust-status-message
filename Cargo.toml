@@ -1,5 +1,6 @@
 [workspace]
 members = ["contracts/*"]
+exclude = ["integration-tests/rs"]
 
 [profile.release]
 codegen-units = 1

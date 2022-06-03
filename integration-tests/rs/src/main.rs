@@ -3,7 +3,7 @@ use near_units::parse_near;
 use workspaces::prelude::*; 
 use workspaces::{network::Sandbox, Account, Contract, Worker};
 
-const WASM_FILEPATH: &str = "../../res/status_message.wasm";
+const WASM_FILEPATH: &str = "../../target/res/simple.wasm";
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

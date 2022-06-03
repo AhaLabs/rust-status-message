@@ -5,7 +5,6 @@ use near_sdk::{
     serde::{Deserialize, Serialize},
     AccountId,
 };
-use witgen::witgen;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -21,14 +20,10 @@ impl Default for StatusMessage {
     }
 }
 
-/// A simple message with a title
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
 #[serde(crate = "near_sdk::serde")]
-#[witgen]
 pub struct Message {
-    /// Title that describes the message
     title: String,
-    /// body of the  message
     body: String,
 }
 
@@ -39,7 +34,9 @@ impl StatusMessage {
         self.records.insert(&account_id, &Message { title, body });
     }
 
-    pub fn get_status(&self, account_id: AccountId) -> Option<Message> {
-        self.records.get(&account_id)
+    pub fn get_status(&self, account_id: AccountId) -> Option<String> {
+        self.records
+            .get(&account_id)
+            .map(|Message { body, title }| format!(r#"{{"body":"{body}", "title": "{title}"}}"#))
     }
 }
